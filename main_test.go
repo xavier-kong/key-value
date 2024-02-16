@@ -26,3 +26,7 @@ func TestHello(t *testing.T) {
 		t.Errorf("Server not live")
 	}
 }
+
+func TestGet(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "/store", nil)
+}
