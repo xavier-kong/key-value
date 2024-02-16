@@ -12,7 +12,15 @@ type Store struct {
 
 var store Store
 
-type OpResult struct{}
+type Status enum {
+	Failure
+	Success
+}
+
+type OpResult struct{
+	status: Status
+	res: string
+}
 
 func (store Store) get(key string) {
 	val, err := store.Store[key]
