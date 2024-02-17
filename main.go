@@ -12,13 +12,8 @@ type Store struct {
 
 var store Store
 
-type Status enum {
-	Failure
-	Success
-}
-
-type OpResult struct{
-	status: Status
+type OpResult struct {
+	success: bool
 	res: string
 }
 
