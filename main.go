@@ -12,29 +12,62 @@ type Store struct {
 
 var store Store
 
-type OpResult struct {
-	success: bool
-	res: string
+type ResBody struct {
+	key   string
+	value string
 }
 
-func (store Store) get(key string) {
-	val, err := store.Store[key]
+type OpResult struct {
+	success bool
+	res     ResBody
+}
 
-	if err {
+func (store Store) get(key string) OpResult {
+	val, exists := store.Store[key]
+
+	res := OpResult{
+		success: false,
+		res: ResBody{
+			key:   key,
+			value: "",
+		},
 	}
 
-	return val
+	if !exists {
+		res.res.value = "Key doesn't exist in store"
+		return res
+	}
+
+	if val == "" {
+		res.res.value = "Value is empty"
+		return res
+	}
+
+	res.success = true
+	res.res.value = val
+
+	return res
 }
 
-func (store Store) add(key string, value string) {
-	val, err := store.Store[key]
+func (store Store) add(key string, value string) OpResult {
+	_, exists := store.Store[key]
 
-	if val != "" {
+	res := OpResult{
+		success: false,
+		res: ResBody{
+			key:   key,
+			value: "",
+		},
+	}
+
+	if exists {
+		res.res.value = "Value exists"
+		return res
 	}
 
 	store.Store[key] = value
 
-	return { success }
+	return res
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {

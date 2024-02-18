@@ -28,5 +28,8 @@ func TestHello(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
+	body := make(map[string]string)
+	body["key"] = "test"
+
 	request := httptest.NewRequest(http.MethodGet, "/store", nil)
 }
