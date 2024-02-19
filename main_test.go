@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -28,8 +31,22 @@ func TestHello(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	body := make(map[string]string)
-	body["key"] = "test"
+	getBody := make(map[string]string)
+	getBody["key"] = "test"
 
-	request := httptest.NewRequest(http.MethodGet, "/store", nil)
+	body, _ := json.Marshal(getBody)
+
+	request := httptest.NewRequest(http.MethodGet, "/store", bytes.NewReader(body))
+
+	responseRecorder := httptest.NewRecorder()
+
+	storeDispatch(responseRecorder, request)
+
+	res := responseRecorder.Result()
+
+	defer res.Body.Close()
+
+	data, err := ioutil.ReadAll(res.Body)
+
+	fmt.Println(data)
 }

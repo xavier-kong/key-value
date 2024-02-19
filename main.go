@@ -94,6 +94,7 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 	store.init()
 
 	if req.Method == "GET" {
+		res := store.get(req.Body)
 	}
 }
 
