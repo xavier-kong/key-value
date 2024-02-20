@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -49,6 +50,20 @@ func (store Store) get(key string) OpResult {
 	return res
 }
 
+type RequestBody struct {
+	Key   string `json:"key"`
+	Value string `json:"key"`
+}
+
+func parseRequestBody(req *http.Request) (string, string) {
+	var body RequestBody
+	err := json.NewDecoder(req.Body).Decode(&body)
+	if err != nil {
+		return "", err.Error()
+	}
+	return body.Key, body.Value
+}
+
 func (store Store) add(key string, value string) OpResult {
 	_, exists := store.Store[key]
 
@@ -94,7 +109,8 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 	store.init()
 
 	if req.Method == "GET" {
-		res := store.get(req.Body)
+		key, _ := parseRequestBody(req)
+		res := store.get(key)
 	}
 }
 
