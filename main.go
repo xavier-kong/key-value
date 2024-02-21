@@ -108,10 +108,19 @@ func (store Store) init() {
 func storeDispatch(w http.ResponseWriter, req *http.Request) {
 	store.init()
 
+	var res OpResult
+
 	if req.Method == "GET" {
 		key, _ := parseRequestBody(req)
-		res := store.get(key)
+		res = store.get(key)
 	}
+
+	if req.Method == "POST" {
+		key, value := parseRequestBody(req)
+		res = store.add(key, value)
+	}
+
+	// write to res
 }
 
 func main() {
