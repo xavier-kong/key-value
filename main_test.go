@@ -47,6 +47,9 @@ func TestGet(t *testing.T) {
 	defer res.Body.Close()
 
 	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		t.Errorf("error reading response")
+	}
 
-	fmt.Println(data)
+	fmt.Println("test", string(data))
 }

@@ -64,8 +64,7 @@ func parseRequestBody(req *http.Request) (string, string) {
 	return body.Key, body.Value
 }
 
-func (store Store) add(key string, value string) OpResult {
-	_, exists := store.Store[key]
+func (store Store) add(key string, value string) OpResult { _, exists := store.Store[key]
 
 	res := OpResult{
 		success: false,
@@ -119,6 +118,8 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 		key, value := parseRequestBody(req)
 		res = store.add(key, value)
 	}
+
+	fmt.Fprintf(w, res)
 
 	// write to res
 }
