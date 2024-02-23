@@ -53,3 +53,4 @@ func TestGet(t *testing.T) {
 
 	fmt.Println("test", string(data))
 }
+	request := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
