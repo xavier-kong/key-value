@@ -64,7 +64,7 @@ func parseRequestBody(req *http.Request) (string, string) {
 	return body.Key, body.Value
 }
 
-func (store Store) add(key string, value string) OpResult { 
+func (store Store) add(key string, value string) OpResult {
 	_, exists := store.Store[key]
 
 	res := OpResult{
@@ -90,7 +90,7 @@ func hello(w http.ResponseWriter, req *http.Request) {
 }
 
 func headers(w http.ResponseWriter, req *http.Request) {
-i	for name, headers := range req.Header {
+	for name, headers := range req.Header {
 		for _, h := range headers {
 			fmt.Fprintf(w, "%v: %v\n", name, h)
 		}

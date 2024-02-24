@@ -52,5 +52,8 @@ func TestGet(t *testing.T) {
 	}
 
 	fmt.Println("test", string(data))
+
+	postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
+
+	postResponseRecorded := httptest.NewRecorder()
 }
-	request := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
