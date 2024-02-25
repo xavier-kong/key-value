@@ -51,9 +51,13 @@ func TestGet(t *testing.T) {
 		t.Errorf("error reading response")
 	}
 
-	fmt.Println("test", string(data))
+	getRes := OpResult{}
 
-	postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
+	json.Unmarshal([]byte(string(data)), &getRes)
 
-	postResponseRecorded := httptest.NewRecorder()
+	fmt.Println("test %v", getRes)
+
+	// postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
+
+	// postResponseRecorded := httptest.NewRecorder()
 }

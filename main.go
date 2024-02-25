@@ -120,9 +120,7 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 		res = store.add(key, value)
 	}
 
-	fmt.Fprintf(w, res)
-
-	// write to res
+	fmt.Fprintf(w, "%#v", res)
 }
 
 func main() {
