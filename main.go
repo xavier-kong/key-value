@@ -47,6 +47,8 @@ func (store Store) get(key string) OpResult {
 	res.success = true
 	res.res.value = val
 
+	fmt.Println(res)
+
 	return res
 }
 
@@ -119,6 +121,8 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 		key, value := parseRequestBody(req)
 		res = store.add(key, value)
 	}
+
+	fmt.Println(res.res.value)
 
 	fmt.Fprintf(w, "%#v", res)
 }

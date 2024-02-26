@@ -55,7 +55,8 @@ func TestGet(t *testing.T) {
 
 	json.Unmarshal([]byte(string(data)), &getRes)
 
-	fmt.Println("test %v", getRes)
+	fmt.Printf("test %v\n", getRes)
+	fmt.Println(getRes.res.value)
 
 	// postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
 
