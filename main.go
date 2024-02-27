@@ -54,7 +54,7 @@ func (store Store) get(key string) OpResult {
 
 type RequestBody struct {
 	Key   string `json:"key"`
-	Value string `json:"key"`
+	Value string `json:"value"`
 }
 
 func parseRequestBody(req *http.Request) (string, string) {
@@ -112,6 +112,8 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 
 	var res OpResult
 
+	w.Header().Set("Content-Type", "application/json")
+
 	if req.Method == "GET" {
 		key, _ := parseRequestBody(req)
 		res = store.get(key)
@@ -122,9 +124,8 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 		res = store.add(key, value)
 	}
 
-	fmt.Println(res.res.value)
-
-	fmt.Fprintf(w, "%#v", res)
+	json.NewEncoder(w).Encode(res)
+	// fmt.Fprintf(w, "%#v", res)
 }
 
 func main() {
