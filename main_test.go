@@ -53,17 +53,14 @@ func TestGet(t *testing.T) {
 
 	getRes := OpResult{}
 
-	fmt.Println(data)
-
 	json.Unmarshal([]byte(string(data)), &getRes)
 
-	if getRes.success != false {
+	if getRes.Success != false {
 		t.Errorf("expected success to be false")
 	}
 
-	fmt.Println("val", getRes)
-	if getRes.res.value != "Key doesn't exist in store" {
-		t.Errorf("expected res value to be 'Key doesn't exist in store' found %s", getRes.res.value)
+	if getRes.Res.Value != "Key doesn't exist in store" {
+		t.Errorf("expected res value to be 'Key doesn't exist in store' found %s", getRes.Res.Value)
 	}
 
 	// postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))

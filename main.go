@@ -14,38 +14,38 @@ type Store struct {
 var store Store
 
 type ResBody struct {
-	key   string
-	value string
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type OpResult struct {
-	success bool
-	res     ResBody
+	Success bool    `json:"success"`
+	Res     ResBody `json:"res"`
 }
 
 func (store Store) get(key string) OpResult {
 	val, exists := store.Store[key]
 
 	res := OpResult{
-		success: false,
-		res: ResBody{
-			key:   key,
-			value: "",
+		Success: false,
+		Res: ResBody{
+			Key:   key,
+			Value: "",
 		},
 	}
 
 	if !exists {
-		res.res.value = "Key doesn't exist in store"
+		res.Res.Value = "Key doesn't exist in store"
 		return res
 	}
 
 	if val == "" {
-		res.res.value = "Value is empty"
+		res.Res.Value = "Value is empty"
 		return res
 	}
 
-	res.success = true
-	res.res.value = val
+	res.Success = true
+	res.Res.Value = val
 
 	return res
 }
@@ -68,15 +68,15 @@ func (store Store) add(key string, value string) OpResult {
 	_, exists := store.Store[key]
 
 	res := OpResult{
-		success: false,
-		res: ResBody{
-			key:   key,
-			value: "",
+		Success: false,
+		Res: ResBody{
+			Key:   key,
+			Value: "",
 		},
 	}
 
 	if exists {
-		res.res.value = "Value exists"
+		res.Res.Value = "Value exists"
 		return res
 	}
 
