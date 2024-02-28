@@ -53,6 +53,8 @@ func TestGet(t *testing.T) {
 
 	getRes := OpResult{}
 
+	fmt.Println(data)
+
 	json.Unmarshal([]byte(string(data)), &getRes)
 
 	if getRes.success != false {
