@@ -71,4 +71,14 @@ func TestGet(t *testing.T) {
 	postRes := postResponseRecorder.Result()
 
 	defer postRes.Body.Close()
+
+	data, err = ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		t.Errorf("error reading response")
+	}
+
+	postRes := OpResult{}
+
+	json.Unmarshal([]byte(string(data)), &getRes)
 }
