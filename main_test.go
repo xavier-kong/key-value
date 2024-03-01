@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -63,7 +62,13 @@ func TestGet(t *testing.T) {
 		t.Errorf("expected res value to be 'Key doesn't exist in store' found %s", getRes.Res.Value)
 	}
 
-	// postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
+	postRequest := httptest.NewRequest(http.MethodPost, "/store", bytes.NewReader(body))
 
-	// postResponseRecorded := httptest.NewRecorder()
+	postResponseRecorder := httptest.NewRecorder()
+
+	storeDispatch(postResponseRecorder, postRequest)
+
+	postRes := postResponseRecorder.Result()
+
+	defer postRes.Body.Close()
 }
