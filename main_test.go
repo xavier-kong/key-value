@@ -78,7 +78,7 @@ func TestGet(t *testing.T) {
 		t.Errorf("error reading response")
 	}
 
-	postRes := OpResult{}
+	postResRes := OpResult{}
 
-	json.Unmarshal([]byte(string(data)), &getRes)
+	json.Unmarshal([]byte(string(data)), &postResRes)
 }
