@@ -68,17 +68,23 @@ func TestGet(t *testing.T) {
 
 	storeDispatch(postResponseRecorder, postRequest)
 
-	postRes := postResponseRecorder.Result()
+	// dont test the post request here, assume that it is valid
 
-	defer postRes.Body.Close()
+	storeDispatch(responseRecorder, request)
 
-	data, err = ioutil.ReadAll(res.Body)
+	newRes := responseRecorder.Result()
 
-	if err != nil {
-		t.Errorf("error reading response")
+	defer newRes.Body.Close()
+
+	data, err = ioutil.ReadAll(newRes.Body)
+
+	json.Unmarshal([]byte(string(data)), &getRes)
+
+	if getRes.Success != true {
+		t.Errorf("expected success to be true")
 	}
 
-	postResRes := OpResult{}
-
-	json.Unmarshal([]byte(string(data)), &postResRes)
+	if getRes.Res.Value != "test" {
+		t.Errorf("expected value to be 'test' got '%s' instead", getRes.Res.Value)
+	}
 }

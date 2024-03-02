@@ -99,9 +99,7 @@ func headers(w http.ResponseWriter, req *http.Request) {
 
 func (store Store) init() {
 	if store.Store == nil {
-		store = Store{
-			Store: make(map[string]string),
-		}
+		store.Store = make(map[string]string)
 	}
 }
 
