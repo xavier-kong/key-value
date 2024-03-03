@@ -31,7 +31,8 @@ func TestHello(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	getBody := make(map[string]string)
-	getBody["key"] = "test"
+	getBody["key"] = "testKey"
+	getBody["value"] = "testValue"
 
 	body, _ := json.Marshal(getBody)
 
@@ -70,21 +71,34 @@ func TestGet(t *testing.T) {
 
 	// dont test the post request here, assume that it is valid
 
+	// Recreate the request body for the second GET request
+	getBody["key"] = "testKey" // Resetting the key
+
+	body, _ = json.Marshal(getBody)
+
+	request = httptest.NewRequest(http.MethodGet, "/store", bytes.NewReader(body))
+
+	responseRecorder = httptest.NewRecorder()
+
 	storeDispatch(responseRecorder, request)
 
-	newRes := responseRecorder.Result()
+	res = responseRecorder.Result()
 
-	defer newRes.Body.Close()
+	defer res.Body.Close()
 
-	data, err = ioutil.ReadAll(newRes.Body)
+	data, err = ioutil.ReadAll(res.Body)
 
-	json.Unmarshal([]byte(string(data)), &getRes)
+	if err != nil {
+		t.Errorf("error reading response")
+	}
+
+	json.Unmarshal([]byte(data), &getRes)
 
 	if getRes.Success != true {
 		t.Errorf("expected success to be true")
 	}
 
-	if getRes.Res.Value != "test" {
-		t.Errorf("expected value to be 'test' got '%s' instead", getRes.Res.Value)
+	if getRes.Res.Value != "testValue" {
+		t.Errorf("expected value to be 'testValue' got '%s' instead", getRes.Res.Value)
 	}
 }

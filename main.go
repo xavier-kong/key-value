@@ -23,7 +23,7 @@ type OpResult struct {
 	Res     ResBody `json:"res"`
 }
 
-func (store Store) get(key string) OpResult {
+func (store *Store) get(key string) OpResult {
 	val, exists := store.Store[key]
 
 	res := OpResult{
@@ -64,7 +64,7 @@ func parseRequestBody(req *http.Request) (string, string) {
 	return body.Key, body.Value
 }
 
-func (store Store) add(key string, value string) OpResult {
+func (store *Store) add(key string, value string) OpResult {
 	_, exists := store.Store[key]
 
 	res := OpResult{
@@ -97,7 +97,7 @@ func headers(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (store Store) init() {
+func (store *Store) init() {
 	if store.Store == nil {
 		store.Store = make(map[string]string)
 	}
