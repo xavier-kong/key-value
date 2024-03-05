@@ -73,6 +73,29 @@ func (store *Store) delete(key string) OpResult {
 	return res
 }
 
+func (store *Store) update(key string, value string) OpResult {
+	_, exists := store.Store[key]
+
+	res := OpResult{
+		Success: false,
+		Res: ResBody{
+			Key:   key,
+			Value: value,
+		},
+	}
+
+	if !exists {
+		res.Res.Value = "Key doesn't exist in store"
+		return res
+	}
+
+	store.Store[key] = value
+
+	res.Success = true
+
+	return res
+}
+
 type RequestBody struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
@@ -132,20 +155,22 @@ func storeDispatch(w http.ResponseWriter, req *http.Request) {
 	var res OpResult
 
 	w.Header().Set("Content-Type", "application/json")
+	key, value := parseRequestBody(req)
 
 	if req.Method == "GET" {
-		key, _ := parseRequestBody(req)
 		res = store.get(key)
 	}
 
 	if req.Method == "POST" {
-		key, value := parseRequestBody(req)
 		res = store.add(key, value)
 	}
 
 	if req.Method == "DELETE" {
-		key, _ := parseRequestBody(req)
 		res = store.delete(key)
+	}
+
+	if req.Method == "PUT" {
+		res = store.update(key, value)
 	}
 
 	json.NewEncoder(w).Encode(res)
