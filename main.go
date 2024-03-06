@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 type Store struct {
 	Store map[string]string
-	// Mu    mutex
+	Mu    sync.Mutex
 }
 
 var store Store
@@ -24,6 +25,8 @@ type OpResult struct {
 }
 
 func (store *Store) get(key string) OpResult {
+	store.Mu.Lock()
+	defer store.Mu.Unlock()
 	val, exists := store.Store[key]
 
 	res := OpResult{
@@ -51,6 +54,9 @@ func (store *Store) get(key string) OpResult {
 }
 
 func (store *Store) delete(key string) OpResult {
+	store.Mu.Lock()
+	defer store.Mu.Unlock()
+
 	_, exists := store.Store[key]
 
 	res := OpResult{
@@ -74,6 +80,9 @@ func (store *Store) delete(key string) OpResult {
 }
 
 func (store *Store) update(key string, value string) OpResult {
+	store.Mu.Lock()
+	defer store.Mu.Unlock()
+
 	_, exists := store.Store[key]
 
 	res := OpResult{
@@ -111,6 +120,9 @@ func parseRequestBody(req *http.Request) (string, string) {
 }
 
 func (store *Store) add(key string, value string) OpResult {
+	store.Mu.Lock()
+	defer store.Mu.Unlock()
+
 	_, exists := store.Store[key]
 
 	res := OpResult{
